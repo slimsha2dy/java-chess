@@ -9,7 +9,6 @@ import domain.piece.Piece;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 class ChessBoard {
     private final List<Piece> piecesOnBoard;
@@ -35,10 +34,8 @@ class ChessBoard {
     }
 
     private boolean isEmptyPosition(Position from) {
-        Optional<Piece> optionalPiece = piecesOnBoard.stream()
-                .filter(piece1 -> piece1.isOn(from))
-                .findFirst();
-        return optionalPiece.isEmpty();
+        return piecesOnBoard.stream()
+                .noneMatch(piece -> piece.isOn(from));
     }
 
     private boolean isOtherTeamTurn(Position from) {
