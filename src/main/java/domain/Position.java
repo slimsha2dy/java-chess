@@ -45,7 +45,7 @@ public enum Position {
         if (isRowRoute(absColDistance)) {
             return getRowRoute(targetPosition);
         }
-        throw new RuntimeException();
+        throw new IllegalArgumentException("존재하지 않는 경로입니다.");
     }
 
     private boolean isDiagonalRoute(int absRowDistance, int absColDistance) {
