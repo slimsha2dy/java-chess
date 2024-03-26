@@ -33,33 +33,33 @@ class ChessBoard {
         return moveResult.isMoved();
     }
 
-    private boolean isEmptyPosition(Position from) {
+    private boolean isEmptyPosition(Position position) {
         return piecesOnBoard.stream()
-                .noneMatch(piece -> piece.isOn(from));
+                .noneMatch(piece -> piece.isOn(position));
     }
 
-    private boolean isOtherTeamTurn(Position from) {
-        Piece piece = findPiece(from);
+    private boolean isOtherTeamTurn(Position position) {
+        Piece piece = findPiece(position);
         Team otherTeam = currentTeam.otherTeam();
         Team pieceTeam = piece.getTeam();
         return pieceTeam.equals(otherTeam);
     }
 
-    private Piece findPiece(Position from) {
+    private Piece findPiece(Position position) {
         return piecesOnBoard.stream()
-                .filter(piece -> piece.isOn(from))
+                .filter(piece -> piece.isOn(position))
                 .findFirst().orElseThrow();
     }
 
-    private void removePieceIfCaught(Position to, PieceMoveResult moveResult) {
+    private void removePieceIfCaught(Position position, PieceMoveResult moveResult) {
         if (moveResult.equals(CATCH)) {
-            removeDeadPiece(to);
+            removeDeadPiece(position);
         }
     }
 
-    private void removeDeadPiece(Position to) {
+    private void removeDeadPiece(Position position) {
         Piece needToRemovePiece = piecesOnBoard.stream()
-                .filter(piece -> piece.isOn(to))
+                .filter(piece -> piece.isOn(position))
                 .filter(piece -> {
                     Team pieceTeam = piece.getTeam();
                     Team otherTeam = currentTeam.otherTeam();
