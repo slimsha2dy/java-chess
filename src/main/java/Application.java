@@ -26,17 +26,17 @@ public class Application {
         OutputView.printChessBoard(piecesOnBoard);
 
         Command endOrMove = InputView.readEndOrMove();
-        while (!isEndCommand(endOrMove) && !isEndGame(endOrMove, chessGame)) {
+        while (!isEndCommand(endOrMove)) {
+            GameStatus gameStatus = playGame(endOrMove, chessGame);
+            if (gameStatus.equals(END)) {
+                OutputView.printEndGame(chessGame.getWinner());
+                break;
+            }
+            if (gameStatus.equals(RETRY)) {
+                OutputView.printReInputGuide();
+            }
             endOrMove = InputView.readEndOrMove();
         }
-    }
-
-    private static boolean isEndGame(Command endOrMove, ChessGame chessGame) {
-        if (playGame(endOrMove, chessGame)) {
-            OutputView.printEndGame(chessGame.getWinner());
-            return true;
-        }
-        return false;
     }
 
     private static boolean isEndCommand(Command startOrEnd) {
@@ -49,19 +49,13 @@ public class Application {
                 .collect(Collectors.toList());
     }
 
-    private static boolean playGame(Command command, ChessGame chessGame) {
+    private static GameStatus playGame(Command command, ChessGame chessGame) {
         MoveCommand moveCommand = (MoveCommand) command;
         Position from = moveCommand.getFrom();
         Position to = moveCommand.getTo();
-        GameStatus moveResult = chessGame.move(from, to);
+        GameStatus gameStatus = chessGame.move(from, to);
         List<PieceWrapper> piecesOnBoard = wrapPieces(chessGame.getPiecesOnBoard());
         OutputView.printChessBoard(piecesOnBoard);
-        if (moveResult.equals(END)) {
-            return true;
-        }
-        if (moveResult.equals(RETRY)) {
-            OutputView.printReInputGuide();
-        }
-        return false;
+        return gameStatus;
     }
 }
