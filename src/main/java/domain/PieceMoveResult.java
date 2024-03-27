@@ -1,9 +1,9 @@
 package domain;
 
 public enum PieceMoveResult {
-	SUCCESS, FAILURE, CATCH;
+    SUCCESS, FAILURE, CATCH, CATCH_KING;
 
-	public boolean isMoved() {
-		return !this.equals(FAILURE);
-	}
+    public boolean isMoved() {
+        return !this.equals(FAILURE);
+    }
 }

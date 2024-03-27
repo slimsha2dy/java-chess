@@ -1,8 +1,10 @@
 package domain.piece;
 
 import static domain.PieceMoveResult.CATCH;
+import static domain.PieceMoveResult.CATCH_KING;
 import static domain.PieceMoveResult.FAILURE;
 import static domain.PieceMoveResult.SUCCESS;
+import static domain.piece.PieceType.KING;
 
 import domain.PieceMoveResult;
 import domain.PiecesOnChessBoard;
@@ -28,7 +30,7 @@ abstract class AbstractCatchOnMovePiece extends Piece {
             return FAILURE;
         }
         if (isOtherTeam(targetPosition, piecesOnChessBoard)) {
-            return CATCH;
+            return getCatchKingOrOther(targetPosition, piecesOnChessBoard);
         }
         return SUCCESS;
     }
@@ -41,5 +43,17 @@ abstract class AbstractCatchOnMovePiece extends Piece {
     private boolean isOtherTeam(Position targetPosition, PiecesOnChessBoard piecesOnChessBoard) {
         Team targetTeam = piecesOnChessBoard.whichTeam(targetPosition);
         return targetTeam.equals(getTeam().otherTeam());
+    }
+
+    private PieceMoveResult getCatchKingOrOther(Position targetPosition, PiecesOnChessBoard piecesOnChessBoard) {
+        if (isKing(targetPosition, piecesOnChessBoard)) {
+            return CATCH_KING;
+        }
+        return CATCH;
+    }
+
+    private boolean isKing(Position targetPosition, PiecesOnChessBoard piecesOnChessBoard) {
+        PieceType pieceType = piecesOnChessBoard.whichPieceType(targetPosition);
+        return pieceType.equals(KING);
     }
 }

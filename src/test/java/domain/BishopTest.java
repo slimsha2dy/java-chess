@@ -1,9 +1,11 @@
 package domain;
 
 import static domain.PieceMoveResult.CATCH;
+import static domain.PieceMoveResult.CATCH_KING;
 import static domain.PieceMoveResult.FAILURE;
 import static domain.PieceMoveResult.SUCCESS;
 import static domain.Position.A1;
+import static domain.Position.A4;
 import static domain.Position.A7;
 import static domain.Position.B2;
 import static domain.Position.B6;
@@ -21,6 +23,7 @@ import static domain.Team.BLACK;
 import static domain.Team.WHITE;
 
 import domain.piece.Bishop;
+import domain.piece.King;
 import domain.piece.Pawn;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -120,5 +124,23 @@ class BishopTest {
         PiecesOnChessBoard piecesOnChessBoard = new PiecesOnChessBoard(List.of(new Pawn(targetPosition, BLACK)));
         Assertions.assertThat(bishop.move(targetPosition, piecesOnChessBoard))
                 .isEqualTo(CATCH);
+    }
+
+    @Test
+    @DisplayName("비숍의 목적지에 다른 팀 킹이 있는 경우 CATCH_KING을 반환하는지 검증")
+    void catchKing() {
+        Bishop bishop = new Bishop(D4, WHITE);
+        PiecesOnChessBoard piecesOnChessBoard = new PiecesOnChessBoard(List.of(new King(A1, BLACK)));
+        Assertions.assertThat(bishop.move(A1, piecesOnChessBoard))
+                .isEqualTo(CATCH_KING);
+    }
+
+    @Test
+    @DisplayName("비숍의 목적지에 같은 팀 킹이 있는 경우 이동이 불가능한지 검증")
+    void moveFailureByOurKing() {
+        Bishop bishop = new Bishop(D4, WHITE);
+        PiecesOnChessBoard piecesOnChessBoard = new PiecesOnChessBoard(List.of(new King(A1, WHITE)));
+        Assertions.assertThat(bishop.move(A4, piecesOnChessBoard))
+                .isEqualTo(FAILURE);
     }
 }
