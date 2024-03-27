@@ -8,7 +8,7 @@ import java.util.List;
 public class PiecesOnChessBoard {
     private final List<PieceWrapper> pieces;
 
-    PiecesOnChessBoard(List<Piece> pieces) {
+    public PiecesOnChessBoard(List<Piece> pieces) {
         this.pieces = pieces.stream().map(PieceWrapper::new).toList();
     }
 

@@ -1,4 +1,4 @@
-package domain;
+package domain.piece;
 
 import static domain.PieceMoveResult.CATCH;
 import static domain.PieceMoveResult.CATCH_KING;
@@ -35,9 +35,8 @@ import static domain.Position.H8;
 import static domain.Team.BLACK;
 import static domain.Team.WHITE;
 
-import domain.piece.King;
-import domain.piece.Pawn;
-import domain.piece.Queen;
+import domain.PiecesOnChessBoard;
+import domain.Position;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;

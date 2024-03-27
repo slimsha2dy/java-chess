@@ -1,11 +1,9 @@
-package domain;
+package domain.command;
 
 import static domain.Position.A1;
 import static domain.Position.A2;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
-import domain.command.MoveCommand;
-import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +18,7 @@ class MoveCommandTest {
                 () -> Assertions.assertThat(moveCommand.getFrom())
                         .isEqualTo(A1),
                 () -> Assertions.assertThat(moveCommand.getTo())
-                                .isEqualTo(A2)
+                        .isEqualTo(A2)
         );
     }
 
