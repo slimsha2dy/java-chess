@@ -1,10 +1,13 @@
+import static domain.GameStatus.END;
+import static domain.GameStatus.RETRY;
 import static domain.command.EndCommand.END_COMMAND;
 
 import domain.ChessGame;
+import domain.GameStatus;
+import domain.Position;
 import domain.command.Command;
 import domain.command.MoveCommand;
 import domain.piece.Piece;
-import domain.Position;
 import domain.piece.PieceWrapper;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +26,17 @@ public class Application {
         OutputView.printChessBoard(piecesOnBoard);
 
         Command endOrMove = InputView.readEndOrMove();
-        while (!isEndCommand(endOrMove)) {
-            playGame(endOrMove, chessGame);
+        while (!isEndCommand(endOrMove) && !isEndGame(endOrMove, chessGame)) {
             endOrMove = InputView.readEndOrMove();
         }
+    }
+
+    private static boolean isEndGame(Command endOrMove, ChessGame chessGame) {
+        if (playGame(endOrMove, chessGame)) {
+            OutputView.printEndGame(chessGame.getWinner());
+            return true;
+        }
+        return false;
     }
 
     private static boolean isEndCommand(Command startOrEnd) {
@@ -39,15 +49,19 @@ public class Application {
                 .collect(Collectors.toList());
     }
 
-    private static void playGame(Command command, ChessGame chessGame) {
+    private static boolean playGame(Command command, ChessGame chessGame) {
         MoveCommand moveCommand = (MoveCommand) command;
         Position from = moveCommand.getFrom();
         Position to = moveCommand.getTo();
-        boolean moveSuccess = chessGame.move(from, to);
+        GameStatus moveResult = chessGame.move(from, to);
         List<PieceWrapper> piecesOnBoard = wrapPieces(chessGame.getPiecesOnBoard());
         OutputView.printChessBoard(piecesOnBoard);
-        if (!moveSuccess) {
+        if (moveResult.equals(END)) {
+            return true;
+        }
+        if (moveResult.equals(RETRY)) {
             OutputView.printReInputGuide();
         }
+        return false;
     }
 }

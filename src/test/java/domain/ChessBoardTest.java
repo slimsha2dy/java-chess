@@ -1,5 +1,7 @@
 package domain;
 
+import static domain.PieceMoveResult.FAILURE;
+import static domain.PieceMoveResult.SUCCESS;
 import static domain.Position.A1;
 import static domain.Position.A3;
 import static domain.Position.A4;
@@ -65,8 +67,8 @@ class ChessBoardTest {
         ChessBoard chessBoard = new ChessBoard(List.of(
                 new Pawn(D2, WHITE), new Rook(A1, WHITE), new King(E1, WHITE),
                 new Knight(B1, WHITE), new Bishop(C1, WHITE), new Queen(D1, WHITE)));
-        boolean moveSuccess = chessBoard.move(from, to);
-        Assertions.assertThat(moveSuccess).isTrue();
+        Assertions.assertThat(chessBoard.move(from, to))
+                .isEqualTo(SUCCESS);
     }
 
     @ParameterizedTest
@@ -76,16 +78,16 @@ class ChessBoardTest {
         ChessBoard chessBoard = new ChessBoard(List.of(
                 new Pawn(D2, WHITE), new Rook(A1, WHITE), new King(E1, WHITE),
                 new Knight(B1, WHITE), new Bishop(C1, WHITE), new Queen(D1, WHITE)));
-        boolean moveSuccess = chessBoard.move(from, to);
-        Assertions.assertThat(moveSuccess).isFalse();
+        Assertions.assertThat(chessBoard.move(from, to))
+                .isEqualTo(FAILURE);
     }
 
     @Test
     @DisplayName("해당 위치에 말이 없어서 이동이 실패하는지 검증")
     void moveFailureCausePieceNotFound() {
         ChessBoard chessBoard = new ChessBoard(List.of(new Pawn(D2, WHITE)));
-        boolean moveSuccess = chessBoard.move(D3, D4);
-        Assertions.assertThat(moveSuccess).isFalse();
+        Assertions.assertThat(chessBoard.move(D3, D4))
+                .isEqualTo(FAILURE);
     }
 
     @Test
@@ -94,8 +96,8 @@ class ChessBoardTest {
         ChessBoard chessBoard = new ChessBoard(List.of(new Pawn(D2, WHITE), new Pawn(D7, BLACK)));
         chessBoard.move(D2, D4);
 
-        boolean moveSuccess = chessBoard.move(D4, D5);
-        Assertions.assertThat(moveSuccess).isFalse();
+        Assertions.assertThat(chessBoard.move(D4, D5))
+                .isEqualTo(FAILURE);
     }
 
     @Test
@@ -114,8 +116,8 @@ class ChessBoardTest {
     void validateTurnNotChangeWhenInvalidMove() {
         ChessBoard chessBoard = new ChessBoard(List.of(new Pawn(D2, WHITE), new Pawn(C3, BLACK)));
         chessBoard.move(D2, D8);
-        boolean blackMoveSuccess = chessBoard.move(C3, C2);
-        Assertions.assertThat(blackMoveSuccess).isFalse();
+        Assertions.assertThat(chessBoard.move(C3, C2))
+                .isEqualTo(FAILURE);
     }
 
     @Test
@@ -123,7 +125,7 @@ class ChessBoardTest {
     void validateTurnChangeWhenValidMove() {
         ChessBoard chessBoard = new ChessBoard(List.of(new Pawn(D2, WHITE), new Pawn(C3, BLACK)));
         chessBoard.move(D2, D3);
-        boolean blackMoveSuccess = chessBoard.move(C3, C2);
-        Assertions.assertThat(blackMoveSuccess).isTrue();
+        Assertions.assertThat(chessBoard.move(C3, C2))
+                .isEqualTo(SUCCESS);
     }
 }

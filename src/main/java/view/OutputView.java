@@ -1,7 +1,7 @@
 package view;
 
-import domain.piece.PieceType;
 import domain.Team;
+import domain.piece.PieceType;
 import domain.piece.PieceWrapper;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +44,11 @@ public class OutputView {
         System.out.println("다시 입력해 주세요");
     }
 
+    public static void printEndGame(Team winner) {
+        TeamAsset winnerAsset = TeamAsset.valueOf(winner.name());
+        System.out.printf("게임이 종료되었습니다. %s 팀이 승리하였습니다.", winnerAsset.value);
+    }
+
     enum PieceAsset {
         BLACK_KING('K'),
         BLACK_QUEEN('Q'),
@@ -61,6 +66,17 @@ public class OutputView {
         private final char value;
 
         PieceAsset(char value) {
+            this.value = value;
+        }
+    }
+
+    enum TeamAsset {
+        BLACK("흑"),
+        WHITE("백");
+
+        private final String value;
+
+        TeamAsset(String value) {
             this.value = value;
         }
     }

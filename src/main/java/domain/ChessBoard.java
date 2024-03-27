@@ -2,6 +2,7 @@ package domain;
 
 import static domain.InitialPieces.INITIAL_PIECES;
 import static domain.PieceMoveResult.CATCH;
+import static domain.PieceMoveResult.CATCH_KING;
 import static domain.PieceMoveResult.FAILURE;
 import static domain.Team.WHITE;
 
@@ -22,15 +23,15 @@ class ChessBoard {
         piecesOnBoard = new ArrayList<>(pieces);
     }
 
-    boolean move(Position from, Position to) {
+    PieceMoveResult move(Position from, Position to) {
         if (isEmptyPosition(from) || isOtherTeamTurn(from)) {
-            return false;
+            return FAILURE;
         }
         Piece piece = findPiece(from);
         PieceMoveResult moveResult = piece.move(to, new PiecesOnChessBoard(piecesOnBoard));
         removePieceIfCaught(to, moveResult);
         changeCurrentTeamIfNotFail(moveResult);
-        return moveResult.isMoved();
+        return moveResult;
     }
 
     private boolean isEmptyPosition(Position position) {
@@ -52,7 +53,7 @@ class ChessBoard {
     }
 
     private void removePieceIfCaught(Position position, PieceMoveResult moveResult) {
-        if (moveResult.equals(CATCH)) {
+        if (moveResult.equals(CATCH) || moveResult.equals(CATCH_KING)) {
             removeDeadPiece(position);
         }
     }
@@ -77,5 +78,9 @@ class ChessBoard {
 
     List<Piece> getPiecesOnBoard() {
         return Collections.unmodifiableList(piecesOnBoard);
+    }
+
+    public Team getWinner() {
+        return this.currentTeam.otherTeam();
     }
 }
