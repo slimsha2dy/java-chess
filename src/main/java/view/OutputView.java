@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OutputView {
+    private static final String COLUMN_IDENTIFIER = "87654321";
+    private static final String ROW_IDENTIFIER = " abcdefgh";
+    private static final String LINE_SEPARATOR = " --------";
+
     public static void printGuide() {
         System.out.printf("> 체스 게임을 시작합니다.%n"
                 + "> 게임 시작 : start%n"
@@ -30,8 +34,10 @@ public class OutputView {
             for (Character c : boardStatus.get(i)) {
                 System.out.print(c);
             }
-            System.out.println();
+            System.out.println("| " + COLUMN_IDENTIFIER.charAt(i - 1));
         }
+        System.out.println(LINE_SEPARATOR);
+        System.out.println(ROW_IDENTIFIER);
     }
 
     private static PieceAsset mappingPiece(PieceWrapper pieceWrapper) {
