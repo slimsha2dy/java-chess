@@ -2,6 +2,7 @@ package view;
 
 import static domain.command.EndCommand.END_COMMAND;
 import static domain.command.StartCommand.START_COMMAND;
+import static domain.command.StatusCommand.STATUS_COMMAND;
 
 import domain.command.Command;
 import domain.command.MoveCommand;
@@ -33,18 +34,25 @@ public class InputView {
         return input.equals("end");
     }
 
-    public static Command readEndOrMove() {
+    public static Command readWhilePlaying() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        while (!input.matches("move [a-h][1-8] [a-h][1-8]") && !isEndCommand(input)) {
+        while (!input.matches("move [a-h][1-8] [a-h][1-8]") && !isEndCommand(input) && !isStatusCommand(input)) {
             System.out.println("다시 입력해 주세요");
             input = scanner.nextLine();
         }
         if (isEndCommand(input)) {
             return END_COMMAND;
         }
+        if (isStatusCommand(input)) {
+            return STATUS_COMMAND;
+        }
         String options = input.substring(OPTION_BEGIN_INDEX);
         String[] splitOptions = options.split(SEPARATOR);
         return new MoveCommand(splitOptions[0], splitOptions[1]);
+    }
+
+    private static boolean isStatusCommand(String input) {
+        return input.equals("status");
     }
 }

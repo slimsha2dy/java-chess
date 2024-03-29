@@ -1,6 +1,9 @@
 import static domain.GameStatus.END;
 import static domain.GameStatus.RETRY;
+import static domain.Team.BLACK;
+import static domain.Team.WHITE;
 import static domain.command.EndCommand.END_COMMAND;
+import static domain.command.StatusCommand.STATUS_COMMAND;
 
 import domain.ChessGame;
 import domain.GameStatus;
@@ -25,22 +28,36 @@ public class Application {
         List<PieceWrapper> piecesOnBoard = wrapPieces(chessGame.getPiecesOnBoard());
         OutputView.printChessBoard(piecesOnBoard);
 
-        Command endOrMove = InputView.readEndOrMove();
-        while (!isEndCommand(endOrMove)) {
-            GameStatus gameStatus = playGame(endOrMove, chessGame);
-            if (gameStatus.equals(END)) {
-                OutputView.printEndGame(chessGame.getWinner());
-                break;
-            }
-            if (gameStatus.equals(RETRY)) {
-                OutputView.printReInputGuide();
-            }
-            endOrMove = InputView.readEndOrMove();
+        while (repeatUntilEnd(chessGame)) {
         }
     }
 
-    private static boolean isEndCommand(Command startOrEnd) {
-        return startOrEnd.equals(END_COMMAND);
+    private static boolean repeatUntilEnd(ChessGame chessGame) {
+        Command command = InputView.readWhilePlaying();
+        if (command.equals(STATUS_COMMAND)) {
+            OutputView.printScore(
+                    chessGame.getTeamScore(WHITE),
+                    chessGame.getTeamScore(BLACK),
+                    chessGame.getHigher()
+            );
+            return true;
+        }
+        if (command.equals(END_COMMAND)) {
+            return false;
+        }
+        GameStatus gameStatus = playGame(command, chessGame);
+        if (gameStatus.equals(END)) {
+            OutputView.printEndGame(chessGame.getWinner());
+            return false;
+        }
+        if (gameStatus.equals(RETRY)) {
+            OutputView.printReInputGuide();
+        }
+        return true;
+    }
+
+    private static boolean isEndCommand(Command command) {
+        return command.equals(END_COMMAND);
     }
 
     private static List<PieceWrapper> wrapPieces(List<Piece> piecesOnBoard) {

@@ -55,6 +55,16 @@ public class OutputView {
         System.out.printf("게임이 종료되었습니다. %s 팀이 승리하였습니다.", winnerAsset.value);
     }
 
+    public static void printScore(double whiteScore, double blackScore, Team higher) {
+        System.out.printf("%s 팀의 점수는 %.1f입니다.%n", TeamAsset.WHITE, whiteScore);
+        System.out.printf("%s 팀의 점수는 %.1f입니다.%n", TeamAsset.BLACK, blackScore);
+        if (higher.equals(Team.NONE)) {
+            System.out.println("양 팀의 점수가 동일합니다.");
+            return;
+        }
+        System.out.printf("현재 %s 팀이 우세합니다.%n", TeamAsset.valueOf(higher.name()));
+    }
+
     enum PieceAsset {
         BLACK_KING('K'),
         BLACK_QUEEN('Q'),
