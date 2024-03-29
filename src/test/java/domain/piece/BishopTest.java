@@ -22,7 +22,7 @@ import static domain.Position.H8;
 import static domain.Team.BLACK;
 import static domain.Team.WHITE;
 
-import domain.PiecesOnChessBoard;
+import domain.board.PiecesOnChessBoard;
 import domain.Position;
 import java.util.Arrays;
 import java.util.List;

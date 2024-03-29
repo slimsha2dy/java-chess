@@ -1,4 +1,4 @@
-package domain;
+package domain.board;
 
 import static domain.PieceMoveResult.FAILURE;
 import static domain.PieceMoveResult.SUCCESS;
@@ -27,6 +27,7 @@ import static domain.Position.H1;
 import static domain.Team.BLACK;
 import static domain.Team.WHITE;
 
+import domain.Position;
 import domain.piece.Bishop;
 import domain.piece.King;
 import domain.piece.Knight;

@@ -20,7 +20,7 @@ import static domain.Team.BLACK;
 import static domain.Team.WHITE;
 
 import domain.PieceMoveResult;
-import domain.PiecesOnChessBoard;
+import domain.board.PiecesOnChessBoard;
 import domain.Position;
 import domain.Team;
 import java.util.List;

@@ -9,6 +9,7 @@ import static domain.Team.BLACK;
 import static domain.Team.NONE;
 import static domain.Team.WHITE;
 
+import domain.board.ChessBoard;
 import domain.piece.Piece;
 import domain.piece.PieceWrapper;
 import java.util.List;

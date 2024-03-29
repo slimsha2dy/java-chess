@@ -1,21 +1,24 @@
-package domain;
+package domain.board;
 
-import static domain.InitialPieces.INITIAL_PIECES;
 import static domain.PieceMoveResult.CATCH;
 import static domain.PieceMoveResult.CATCH_KING;
 import static domain.PieceMoveResult.FAILURE;
 import static domain.Team.WHITE;
+import static domain.board.InitialPieces.INITIAL_PIECES;
 
+import domain.PieceMoveResult;
+import domain.Position;
+import domain.Team;
 import domain.piece.Piece;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class ChessBoard {
+public class ChessBoard {
     private final List<Piece> piecesOnBoard;
     private Team currentTeam = WHITE;
 
-    ChessBoard() {
+    public ChessBoard() {
         this(INITIAL_PIECES);
     }
 
@@ -23,7 +26,7 @@ class ChessBoard {
         piecesOnBoard = new ArrayList<>(pieces);
     }
 
-    PieceMoveResult move(Position from, Position to) {
+    public PieceMoveResult move(Position from, Position to) {
         if (isEmptyPosition(from) || isOtherTeamTurn(from)) {
             return FAILURE;
         }
@@ -76,7 +79,7 @@ class ChessBoard {
         }
     }
 
-    List<Piece> getPiecesOnBoard() {
+    public List<Piece> getPiecesOnBoard() {
         return Collections.unmodifiableList(piecesOnBoard);
     }
 

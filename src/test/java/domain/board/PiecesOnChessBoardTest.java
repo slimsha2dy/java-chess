@@ -1,10 +1,11 @@
-package domain;
+package domain.board;
 
 import static domain.Position.D2;
 import static domain.Team.BLACK;
 import static domain.Team.NONE;
 import static domain.Team.WHITE;
 
+import domain.Team;
 import domain.piece.Pawn;
 import domain.piece.Piece;
 import java.util.List;

@@ -8,7 +8,7 @@ import static domain.piece.PieceType.KING;
 import static domain.piece.PieceType.PAWN;
 
 import domain.PieceMoveResult;
-import domain.PiecesOnChessBoard;
+import domain.board.PiecesOnChessBoard;
 import domain.Position;
 import domain.Team;
 import java.util.List;

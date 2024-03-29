@@ -3,7 +3,7 @@ package domain.piece;
 import static domain.PieceMoveResult.FAILURE;
 
 import domain.PieceMoveResult;
-import domain.PiecesOnChessBoard;
+import domain.board.PiecesOnChessBoard;
 import domain.Position;
 import domain.Team;
 

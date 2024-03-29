@@ -4,7 +4,7 @@ import static domain.PieceMoveResult.FAILURE;
 import static domain.piece.PieceType.BISHOP;
 
 import domain.PieceMoveResult;
-import domain.PiecesOnChessBoard;
+import domain.board.PiecesOnChessBoard;
 import domain.Position;
 import domain.Team;
 import java.util.Optional;
