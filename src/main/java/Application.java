@@ -1,5 +1,4 @@
 import static domain.GameStatus.END;
-import static domain.GameStatus.PROGRESS;
 import static domain.GameStatus.RETRY;
 import static domain.Team.BLACK;
 import static domain.Team.WHITE;
@@ -8,7 +7,6 @@ import static domain.command.EndCommand.END_COMMAND;
 import static domain.command.StartCommand.START_COMMAND;
 import static domain.command.StatusCommand.STATUS_COMMAND;
 
-import dao.DBConnector;
 import dao.MoveDao;
 import dao.MoveDaoImpl;
 import domain.ChessGame;
@@ -25,7 +23,6 @@ import view.OutputView;
 
 public class Application {
     private static final MoveDao MOVE_DAO = new MoveDaoImpl();
-    private static final DBConnector DB_CONNECTOR = new DBConnector();
 
     public static void main(String[] args) {
         OutputView.printGuide();
@@ -47,12 +44,11 @@ public class Application {
 
     private static ChessGame initChessGame(Command command) {
         if (isStartCommand(command)) {
-            MOVE_DAO.deleteAll(DB_CONNECTOR.getConnection());
+            MOVE_DAO.deleteAll();
         }
         ChessGame chessGame = new ChessGame();
         if (isContinueCommand(command)) {
-            List<MoveCommand> moveCommands = MOVE_DAO.findAllMoves(DB_CONNECTOR.getConnection());
-            chessGame.moveNotations(moveCommands);
+            chessGame.loadMoves();
         }
         return chessGame;
     }
@@ -79,12 +75,8 @@ public class Application {
             return false;
         }
         GameStatus gameStatus = playGame(command, chessGame);
-        if (gameStatus.equals(PROGRESS)) {
-            MOVE_DAO.add(DB_CONNECTOR.getConnection(), (MoveCommand) command);
-        }
         if (gameStatus.equals(END)) {
             OutputView.printEndGame(chessGame.getWinner());
-            MOVE_DAO.deleteAll(DB_CONNECTOR.getConnection());
             return false;
         }
         if (gameStatus.equals(RETRY)) {

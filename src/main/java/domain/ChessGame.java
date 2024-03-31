@@ -9,14 +9,16 @@ import static domain.Team.BLACK;
 import static domain.Team.NONE;
 import static domain.Team.WHITE;
 
+import dao.MoveDao;
+import dao.MoveDaoImpl;
 import domain.board.ChessBoard;
-import domain.command.MoveCommand;
 import domain.piece.Piece;
 import domain.piece.PieceWrapper;
 import java.util.List;
 
 public class ChessGame {
     private final ChessBoard chessBoard;
+    private final MoveDao moveDao = new MoveDaoImpl();
 
     public ChessGame() {
         this.chessBoard = new ChessBoard();
@@ -28,8 +30,10 @@ public class ChessGame {
             return RETRY;
         }
         if (moveResult.equals(CATCH_KING)) {
+            moveDao.deleteAll();
             return END;
         }
+        moveDao.add(from, to);
         return PROGRESS;
     }
 
@@ -61,8 +65,8 @@ public class ChessGame {
         return NONE;
     }
 
-    public void moveNotations(List<MoveCommand> moveCommands) {
-        moveCommands
+    public void loadMoves() {
+        moveDao.findAllMoves()
                 .forEach(moveCommand -> move(moveCommand.getFrom(), moveCommand.getTo()));
     }
 }

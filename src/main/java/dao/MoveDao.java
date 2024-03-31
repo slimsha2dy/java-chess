@@ -1,13 +1,16 @@
 package dao;
 
+import domain.Position;
 import domain.command.MoveCommand;
 import java.sql.Connection;
 import java.util.List;
 
 public interface MoveDao {
-    void add(Connection connection, MoveCommand moveCommand);
+    Connection getConnection();
 
-    List<MoveCommand> findAllMoves(Connection connection);
+    void add(Position from, Position to);
 
-    void deleteAll(Connection connection);
+    List<MoveCommand> findAllMoves();
+
+    void deleteAll();
 }
