@@ -1,5 +1,5 @@
 package domain;
 
 public enum GameStatus {
-    RETRY, CONTINUE, END
+    RETRY, PROGRESS, END
 }

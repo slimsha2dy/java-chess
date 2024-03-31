@@ -1,7 +1,7 @@
 package domain;
 
-import static domain.GameStatus.CONTINUE;
 import static domain.GameStatus.END;
+import static domain.GameStatus.PROGRESS;
 import static domain.GameStatus.RETRY;
 import static domain.PieceMoveResult.CATCH_KING;
 import static domain.PieceMoveResult.FAILURE;
@@ -30,7 +30,7 @@ public class ChessGame {
         if (moveResult.equals(CATCH_KING)) {
             return END;
         }
-        return CONTINUE;
+        return PROGRESS;
     }
 
     public List<Piece> getPiecesOnBoard() {

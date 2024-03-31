@@ -1,5 +1,5 @@
-import static domain.GameStatus.CONTINUE;
 import static domain.GameStatus.END;
+import static domain.GameStatus.PROGRESS;
 import static domain.GameStatus.RETRY;
 import static domain.Team.BLACK;
 import static domain.Team.WHITE;
@@ -67,7 +67,7 @@ public class Application {
             return false;
         }
         GameStatus gameStatus = playGame(command, chessGame);
-        if (gameStatus.equals(CONTINUE)) {
+        if (gameStatus.equals(PROGRESS)) {
             MOVE_DAO.add(DB_CONNECTOR.getConnection(), (MoveCommand) command);
         }
         if (gameStatus.equals(END)) {
