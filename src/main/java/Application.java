@@ -33,7 +33,7 @@ public class Application {
         if (isEndCommand(firstCommand)) {
             return;
         }
-        ChessGame chessGame = startPhase(firstCommand);
+        ChessGame chessGame = initChessGame(firstCommand);
         List<PieceWrapper> piecesOnBoard = wrapPieces(chessGame.getPiecesOnBoard());
         OutputView.printChessBoard(piecesOnBoard);
 
@@ -45,16 +45,24 @@ public class Application {
         return command.equals(END_COMMAND);
     }
 
-    private static ChessGame startPhase(Command command) {
-        if (command.equals(START_COMMAND)) {
+    private static ChessGame initChessGame(Command command) {
+        if (isStartCommand(command)) {
             MOVE_DAO.deleteAll(DB_CONNECTOR.getConnection());
         }
         ChessGame chessGame = new ChessGame();
-        if (command.equals(CONTINUE_COMMAND)) {
+        if (isContinueCommand(command)) {
             List<MoveCommand> moveCommands = MOVE_DAO.findAllMoves(DB_CONNECTOR.getConnection());
             chessGame.moveNotations(moveCommands);
         }
         return chessGame;
+    }
+
+    private static boolean isStartCommand(Command command) {
+        return command.equals(START_COMMAND);
+    }
+
+    private static boolean isContinueCommand(Command command) {
+        return command.equals(CONTINUE_COMMAND);
     }
 
     private static boolean repeatUntilEnd(ChessGame chessGame) {
