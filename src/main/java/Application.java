@@ -41,12 +41,16 @@ public class Application {
         }
     }
 
-    private static ChessGame startPhase(Command startOrEnd) {
-        if (startOrEnd.equals(START_COMMAND)) {
+    private static boolean isEndCommand(Command command) {
+        return command.equals(END_COMMAND);
+    }
+
+    private static ChessGame startPhase(Command command) {
+        if (command.equals(START_COMMAND)) {
             MOVE_DAO.deleteAll(DB_CONNECTOR.getConnection());
         }
         ChessGame chessGame = new ChessGame();
-        if (startOrEnd.equals(CONTINUE_COMMAND)) {
+        if (command.equals(CONTINUE_COMMAND)) {
             List<MoveCommand> moveCommands = MOVE_DAO.findAllMoves(DB_CONNECTOR.getConnection());
             chessGame.moveNotations(moveCommands);
         }
@@ -79,10 +83,6 @@ public class Application {
             OutputView.printReInputGuide();
         }
         return true;
-    }
-
-    private static boolean isEndCommand(Command command) {
-        return command.equals(END_COMMAND);
     }
 
     private static List<PieceWrapper> wrapPieces(List<Piece> piecesOnBoard) {
