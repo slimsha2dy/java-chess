@@ -10,6 +10,7 @@ import static domain.Team.NONE;
 import static domain.Team.WHITE;
 
 import domain.board.ChessBoard;
+import domain.command.MoveCommand;
 import domain.piece.Piece;
 import domain.piece.PieceWrapper;
 import java.util.List;
@@ -58,5 +59,10 @@ public class ChessGame {
             return BLACK;
         }
         return NONE;
+    }
+
+    public void moveNotations(List<MoveCommand> moveCommands) {
+        moveCommands
+                .forEach(moveCommand -> move(moveCommand.getFrom(), moveCommand.getTo()));
     }
 }

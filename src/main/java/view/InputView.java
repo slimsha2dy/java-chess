@@ -1,5 +1,6 @@
 package view;
 
+import static domain.command.ContinueCommand.CONTINUE_COMMAND;
 import static domain.command.EndCommand.END_COMMAND;
 import static domain.command.StartCommand.START_COMMAND;
 import static domain.command.StatusCommand.STATUS_COMMAND;
@@ -13,15 +14,18 @@ public class InputView {
     public static final int OPTION_BEGIN_INDEX = 5;
     public static final String SEPARATOR = " ";
 
-    public static Command readStartOrEnd() {
+    public static Command readStartPhase() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        while (!isStartCommand(input) && !isEndCommand(input)) {
+        while (!isStartCommand(input) && !isEndCommand(input) && !isContinueCommand(input)) {
             System.out.println("다시 입력해 주세요");
             input = scanner.nextLine();
         }
         if (isEndCommand(input)) {
             return END_COMMAND;
+        }
+        if (isContinueCommand(input)) {
+            return CONTINUE_COMMAND;
         }
         return START_COMMAND;
     }
@@ -32,6 +36,10 @@ public class InputView {
 
     private static boolean isEndCommand(String input) {
         return input.equals("end");
+    }
+
+    private static boolean isContinueCommand(String input) {
+        return input.equals("continue");
     }
 
     public static Command readWhilePlaying() {

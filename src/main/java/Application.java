@@ -1,10 +1,16 @@
+import static domain.GameStatus.CONTINUE;
 import static domain.GameStatus.END;
 import static domain.GameStatus.RETRY;
 import static domain.Team.BLACK;
 import static domain.Team.WHITE;
+import static domain.command.ContinueCommand.CONTINUE_COMMAND;
 import static domain.command.EndCommand.END_COMMAND;
+import static domain.command.StartCommand.START_COMMAND;
 import static domain.command.StatusCommand.STATUS_COMMAND;
 
+import dao.DBConnector;
+import dao.MoveDao;
+import dao.MoveDaoImpl;
 import domain.ChessGame;
 import domain.GameStatus;
 import domain.Position;
@@ -18,18 +24,33 @@ import view.InputView;
 import view.OutputView;
 
 public class Application {
+    private static final MoveDao MOVE_DAO = new MoveDaoImpl();
+    private static final DBConnector DB_CONNECTOR = new DBConnector();
+
     public static void main(String[] args) {
         OutputView.printGuide();
-        Command startOrEnd = InputView.readStartOrEnd();
-        if (isEndCommand(startOrEnd)) {
+        Command firstCommand = InputView.readStartPhase();
+        if (isEndCommand(firstCommand)) {
             return;
         }
-        ChessGame chessGame = new ChessGame();
+        ChessGame chessGame = startPhase(firstCommand);
         List<PieceWrapper> piecesOnBoard = wrapPieces(chessGame.getPiecesOnBoard());
         OutputView.printChessBoard(piecesOnBoard);
 
         while (repeatUntilEnd(chessGame)) {
         }
+    }
+
+    private static ChessGame startPhase(Command startOrEnd) {
+        if (startOrEnd.equals(START_COMMAND)) {
+            MOVE_DAO.deleteAll(DB_CONNECTOR.getConnection());
+        }
+        ChessGame chessGame = new ChessGame();
+        if (startOrEnd.equals(CONTINUE_COMMAND)) {
+            List<MoveCommand> moveCommands = MOVE_DAO.findAllMoves(DB_CONNECTOR.getConnection());
+            chessGame.moveNotations(moveCommands);
+        }
+        return chessGame;
     }
 
     private static boolean repeatUntilEnd(ChessGame chessGame) {
@@ -46,8 +67,12 @@ public class Application {
             return false;
         }
         GameStatus gameStatus = playGame(command, chessGame);
+        if (gameStatus.equals(CONTINUE)) {
+            MOVE_DAO.add(DB_CONNECTOR.getConnection(), (MoveCommand) command);
+        }
         if (gameStatus.equals(END)) {
             OutputView.printEndGame(chessGame.getWinner());
+            MOVE_DAO.deleteAll(DB_CONNECTOR.getConnection());
             return false;
         }
         if (gameStatus.equals(RETRY)) {
