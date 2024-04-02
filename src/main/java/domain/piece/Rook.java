@@ -1,12 +1,9 @@
 package domain.piece;
 
-import static domain.PieceMoveResult.FAILURE;
-import static domain.piece.PieceType.ROOK;
-
 import domain.PieceMoveResult;
-import domain.board.PiecesOnChessBoard;
 import domain.Position;
 import domain.Team;
+import domain.board.PiecesOnChessBoard;
 import java.util.Optional;
 
 public final class Rook extends AbstractStraightMovePiece {
@@ -19,13 +16,13 @@ public final class Rook extends AbstractStraightMovePiece {
                                                         PiecesOnChessBoard piecesOnChessBoard) {
         Position nowPosition = getPosition();
         if (nowPosition.isOtherColumn(targetPosition) && nowPosition.isOtherRow(targetPosition)) {
-            return Optional.of(FAILURE);
+            return Optional.of(PieceMoveResult.FAILURE);
         }
         return Optional.empty();
     }
 
     @Override
     public PieceType getPieceType() {
-        return ROOK;
+        return PieceType.ROOK;
     }
 }

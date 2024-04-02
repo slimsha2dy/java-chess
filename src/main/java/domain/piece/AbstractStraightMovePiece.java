@@ -1,11 +1,9 @@
 package domain.piece;
 
-import static domain.PieceMoveResult.FAILURE;
-
 import domain.PieceMoveResult;
-import domain.board.PiecesOnChessBoard;
 import domain.Position;
 import domain.Team;
+import domain.board.PiecesOnChessBoard;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +25,7 @@ abstract class AbstractStraightMovePiece extends AbstractCatchOnMovePiece {
         Position nowPosition = getPosition();
         List<Position> route = nowPosition.route(targetPosition);
         if (isAnyPieceOnRouteIsPresent(piecesOnChessBoard, route)) {
-            return Optional.of(FAILURE);
+            return Optional.of(PieceMoveResult.FAILURE);
         }
         return Optional.empty();
     }

@@ -1,12 +1,11 @@
 package view;
 
-import static domain.command.ContinueCommand.CONTINUE_COMMAND;
-import static domain.command.EndCommand.END_COMMAND;
-import static domain.command.StartCommand.START_COMMAND;
-import static domain.command.StatusCommand.STATUS_COMMAND;
-
 import domain.command.Command;
+import domain.command.ContinueCommand;
+import domain.command.EndCommand;
 import domain.command.MoveCommand;
+import domain.command.StartCommand;
+import domain.command.StatusCommand;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -24,12 +23,12 @@ public class InputView {
             input = scanner.nextLine();
         }
         if (isEndCommand(input)) {
-            return END_COMMAND;
+            return EndCommand.END_COMMAND;
         }
         if (isContinueCommand(input)) {
-            return CONTINUE_COMMAND;
+            return ContinueCommand.CONTINUE_COMMAND;
         }
-        return START_COMMAND;
+        return StartCommand.START_COMMAND;
     }
 
     private static boolean isStartCommand(String input) {
@@ -52,10 +51,10 @@ public class InputView {
             input = scanner.nextLine();
         }
         if (isEndCommand(input)) {
-            return END_COMMAND;
+            return EndCommand.END_COMMAND;
         }
         if (isStatusCommand(input)) {
-            return STATUS_COMMAND;
+            return StatusCommand.STATUS_COMMAND;
         }
         String options = input.substring(OPTION_BEGIN_INDEX);
         String[] splitOptions = options.split(SEPARATOR);

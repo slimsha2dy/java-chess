@@ -1,21 +1,17 @@
 package controller;
 
-import static domain.GameStatus.END;
-import static domain.GameStatus.RETRY;
-import static domain.Team.BLACK;
-import static domain.Team.WHITE;
-import static domain.command.ContinueCommand.CONTINUE_COMMAND;
-import static domain.command.EndCommand.END_COMMAND;
-import static domain.command.StartCommand.START_COMMAND;
-import static domain.command.StatusCommand.STATUS_COMMAND;
-
 import dao.MoveDao;
 import dao.MoveDaoImpl;
 import domain.ChessGame;
 import domain.GameStatus;
 import domain.Position;
+import domain.Team;
 import domain.command.Command;
+import domain.command.ContinueCommand;
+import domain.command.EndCommand;
 import domain.command.MoveCommand;
+import domain.command.StartCommand;
+import domain.command.StatusCommand;
 import domain.piece.Piece;
 import domain.piece.PieceWrapper;
 import java.util.List;
@@ -41,7 +37,7 @@ public class ChessController {
     }
 
     private boolean isEndCommand(Command command) {
-        return command.equals(END_COMMAND);
+        return command.equals(EndCommand.END_COMMAND);
     }
 
     private ChessGame initChessGame(Command command) {
@@ -56,32 +52,32 @@ public class ChessController {
     }
 
     private boolean isStartCommand(Command command) {
-        return command.equals(START_COMMAND);
+        return command.equals(StartCommand.START_COMMAND);
     }
 
     private boolean isContinueCommand(Command command) {
-        return command.equals(CONTINUE_COMMAND);
+        return command.equals(ContinueCommand.CONTINUE_COMMAND);
     }
 
     private boolean playTurnAndIsNotEnd(ChessGame chessGame) {
         Command command = InputView.readWhilePlaying();
-        if (command.equals(STATUS_COMMAND)) {
+        if (command.equals(StatusCommand.STATUS_COMMAND)) {
             OutputView.printScore(
-                    chessGame.getTeamScore(WHITE),
-                    chessGame.getTeamScore(BLACK),
+                    chessGame.getTeamScore(Team.WHITE),
+                    chessGame.getTeamScore(Team.BLACK),
                     chessGame.getHigher()
             );
             return true;
         }
-        if (command.equals(END_COMMAND)) {
+        if (command.equals(EndCommand.END_COMMAND)) {
             return false;
         }
         GameStatus gameStatus = playMove(command, chessGame);
-        if (gameStatus.equals(END)) {
+        if (gameStatus.equals(GameStatus.END)) {
             OutputView.printEndGame(chessGame.getWinner());
             return false;
         }
-        if (gameStatus.equals(RETRY)) {
+        if (gameStatus.equals(GameStatus.RETRY)) {
             OutputView.printReInputGuide();
         }
         return true;

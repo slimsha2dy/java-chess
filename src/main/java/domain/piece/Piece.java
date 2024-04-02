@@ -1,11 +1,9 @@
 package domain.piece;
 
-import static domain.PieceMoveResult.FAILURE;
-
 import domain.PieceMoveResult;
-import domain.board.PiecesOnChessBoard;
 import domain.Position;
 import domain.Team;
+import domain.board.PiecesOnChessBoard;
 
 public abstract class Piece {
     private final Team team;
@@ -22,10 +20,10 @@ public abstract class Piece {
 
     public final PieceMoveResult move(Position targetPosition, PiecesOnChessBoard piecesOnChessBoard) {
         if (targetPosition == position) {
-            return FAILURE;
+            return PieceMoveResult.FAILURE;
         }
         PieceMoveResult pieceMoveResult = tryMove(targetPosition, piecesOnChessBoard);
-        if (!pieceMoveResult.equals(FAILURE)) {
+        if (!pieceMoveResult.equals(PieceMoveResult.FAILURE)) {
             position = targetPosition;
         }
         return pieceMoveResult;

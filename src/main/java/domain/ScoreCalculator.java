@@ -1,7 +1,5 @@
 package domain;
 
-import static domain.piece.PieceType.PAWN;
-
 import domain.piece.PieceType;
 import domain.piece.PieceWrapper;
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class ScoreCalculator {
     private double deductionBySameRowPawn(List<PieceWrapper> piecesOfTeam) {
         List<Integer> countPawnOfRow = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0));
         piecesOfTeam.stream()
-                .filter(pieceWrapper -> pieceWrapper.getPieceType().equals(PAWN))
+                .filter(pieceWrapper -> pieceWrapper.getPieceType().equals(PieceType.PAWN))
                 .map(PieceWrapper::getColumn)
                 .forEach(rowIndex -> countPawnOfRow.set(rowIndex, countPawnOfRow.get(rowIndex) + 1));
         return countPawnOfRow.stream()

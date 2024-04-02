@@ -1,11 +1,5 @@
 package domain.board;
 
-import static domain.PieceMoveResult.CATCH;
-import static domain.PieceMoveResult.CATCH_KING;
-import static domain.PieceMoveResult.FAILURE;
-import static domain.Team.WHITE;
-import static domain.board.InitialPieces.INITIAL_PIECES;
-
 import domain.PieceMoveResult;
 import domain.Position;
 import domain.Team;
@@ -16,10 +10,10 @@ import java.util.List;
 
 public class ChessBoard {
     private final List<Piece> piecesOnBoard;
-    private Team currentTeam = WHITE;
+    private Team currentTeam = Team.WHITE;
 
     public ChessBoard() {
-        this(INITIAL_PIECES);
+        this(InitialPieces.INITIAL_PIECES);
     }
 
     ChessBoard(List<Piece> pieces) {
@@ -28,7 +22,7 @@ public class ChessBoard {
 
     public PieceMoveResult move(Position from, Position to) {
         if (isEmptyPosition(from) || isOtherTeamTurn(from)) {
-            return FAILURE;
+            return PieceMoveResult.FAILURE;
         }
         Piece piece = findPiece(from);
         PieceMoveResult moveResult = piece.move(to, new PiecesOnChessBoard(piecesOnBoard));
@@ -56,7 +50,7 @@ public class ChessBoard {
     }
 
     private void removePieceIfCaught(Position position, PieceMoveResult moveResult) {
-        if (moveResult.equals(CATCH) || moveResult.equals(CATCH_KING)) {
+        if (moveResult.equals(PieceMoveResult.CATCH) || moveResult.equals(PieceMoveResult.CATCH_KING)) {
             removeDeadPiece(position);
         }
     }
@@ -74,7 +68,7 @@ public class ChessBoard {
     }
 
     private void changeCurrentTeamIfNotFail(PieceMoveResult moveResult) {
-        if (!moveResult.equals(FAILURE)) {
+        if (!moveResult.equals(PieceMoveResult.FAILURE)) {
             currentTeam = currentTeam.otherTeam();
         }
     }

@@ -1,12 +1,9 @@
 package domain.piece;
 
-import static domain.PieceMoveResult.FAILURE;
-import static domain.piece.PieceType.KNIGHT;
-
 import domain.PieceMoveResult;
-import domain.board.PiecesOnChessBoard;
 import domain.Position;
 import domain.Team;
+import domain.board.PiecesOnChessBoard;
 import java.util.Optional;
 
 public final class Knight extends AbstractCatchOnMovePiece {
@@ -19,7 +16,7 @@ public final class Knight extends AbstractCatchOnMovePiece {
     public Optional<PieceMoveResult> tryMoveAssumeAloneAndCheckRoute(Position targetPosition,
                                                                      PiecesOnChessBoard piecesOnChessBoard) {
         if (!isMovablePosition(targetPosition)) {
-            return Optional.of(FAILURE);
+            return Optional.of(PieceMoveResult.FAILURE);
         }
         return Optional.empty();
     }
@@ -33,6 +30,6 @@ public final class Knight extends AbstractCatchOnMovePiece {
 
     @Override
     public PieceType getPieceType() {
-        return KNIGHT;
+        return PieceType.KNIGHT;
     }
 }

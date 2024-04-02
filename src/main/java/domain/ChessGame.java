@@ -1,14 +1,5 @@
 package domain;
 
-import static domain.GameStatus.END;
-import static domain.GameStatus.PROGRESS;
-import static domain.GameStatus.RETRY;
-import static domain.PieceMoveResult.CATCH_KING;
-import static domain.PieceMoveResult.FAILURE;
-import static domain.Team.BLACK;
-import static domain.Team.NONE;
-import static domain.Team.WHITE;
-
 import dao.MoveDao;
 import dao.MoveDaoImpl;
 import domain.board.ChessBoard;
@@ -26,15 +17,15 @@ public class ChessGame {
 
     public GameStatus move(Position from, Position to) {
         PieceMoveResult moveResult = chessBoard.move(from, to);
-        if (moveResult.equals(FAILURE)) {
-            return RETRY;
+        if (moveResult.equals(PieceMoveResult.FAILURE)) {
+            return GameStatus.RETRY;
         }
-        if (moveResult.equals(CATCH_KING)) {
+        if (moveResult.equals(PieceMoveResult.CATCH_KING)) {
             moveDao.deleteAll();
-            return END;
+            return GameStatus.END;
         }
         moveDao.add(from, to);
-        return PROGRESS;
+        return GameStatus.PROGRESS;
     }
 
     public List<Piece> getPiecesOnBoard() {
@@ -54,15 +45,15 @@ public class ChessGame {
     }
 
     public Team getHigher() {
-        double whiteScore = getTeamScore(WHITE);
-        double blackScore = getTeamScore(BLACK);
+        double whiteScore = getTeamScore(Team.WHITE);
+        double blackScore = getTeamScore(Team.BLACK);
         if (whiteScore > blackScore) {
-            return WHITE;
+            return Team.WHITE;
         }
         if (whiteScore < blackScore) {
-            return BLACK;
+            return Team.BLACK;
         }
-        return NONE;
+        return Team.NONE;
     }
 
     public void loadMoves() {
