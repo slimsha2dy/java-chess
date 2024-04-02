@@ -36,7 +36,7 @@ public class ChessController {
         List<PieceWrapper> piecesOnBoard = wrapPieces(chessGame.getPiecesOnBoard());
         OutputView.printChessBoard(piecesOnBoard);
 
-        while (repeatUntilEnd(chessGame)) {
+        while (playTurnAndIsNotEnd(chessGame)) {
         }
     }
 
@@ -63,7 +63,7 @@ public class ChessController {
         return command.equals(CONTINUE_COMMAND);
     }
 
-    private boolean repeatUntilEnd(ChessGame chessGame) {
+    private boolean playTurnAndIsNotEnd(ChessGame chessGame) {
         Command command = InputView.readWhilePlaying();
         if (command.equals(STATUS_COMMAND)) {
             OutputView.printScore(
@@ -76,7 +76,7 @@ public class ChessController {
         if (command.equals(END_COMMAND)) {
             return false;
         }
-        GameStatus gameStatus = playGame(command, chessGame);
+        GameStatus gameStatus = playMove(command, chessGame);
         if (gameStatus.equals(END)) {
             OutputView.printEndGame(chessGame.getWinner());
             return false;
@@ -93,7 +93,7 @@ public class ChessController {
                 .collect(Collectors.toList());
     }
 
-    private GameStatus playGame(Command command, ChessGame chessGame) {
+    private GameStatus playMove(Command command, ChessGame chessGame) {
         MoveCommand moveCommand = (MoveCommand) command;
         Position from = moveCommand.getFrom();
         Position to = moveCommand.getTo();
