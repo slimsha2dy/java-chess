@@ -1,5 +1,15 @@
 # 체스 게임
 
+## 실행 방법
+
+1. 'docker' 폴더에서 아래의 명령어를 통해 docker 실행
+
+```zsh
+docker-compose -p chess up -d
+```
+
+2. Application 실행
+
 ## 요구사항 정리
 
 ### 체스 판
