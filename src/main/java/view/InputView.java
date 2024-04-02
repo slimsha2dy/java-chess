@@ -8,11 +8,13 @@ import static domain.command.StatusCommand.STATUS_COMMAND;
 import domain.command.Command;
 import domain.command.MoveCommand;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class InputView {
 
-    public static final int OPTION_BEGIN_INDEX = 5;
-    public static final String SEPARATOR = " ";
+    private static final Pattern MOVE_FORM = Pattern.compile("move [a-h][1-8] [a-h][1-8]");
+    private static final int OPTION_BEGIN_INDEX = 5;
+    private static final String SEPARATOR = " ";
 
     public static Command readStartPhase() {
         Scanner scanner = new Scanner(System.in);
@@ -45,7 +47,7 @@ public class InputView {
     public static Command readWhilePlaying() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        while (!input.matches("move [a-h][1-8] [a-h][1-8]") && !isEndCommand(input) && !isStatusCommand(input)) {
+        while (!MOVE_FORM.matcher(input).matches() && !isEndCommand(input) && !isStatusCommand(input)) {
             System.out.println("다시 입력해 주세요");
             input = scanner.nextLine();
         }
