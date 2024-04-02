@@ -10,7 +10,7 @@ public interface MoveDao {
 
     void add(Position from, Position to);
 
-    List<MoveCommand> findAllMoves();
+    List<MoveCommand> findAll();
 
     void deleteAll();
 }

@@ -57,7 +57,7 @@ public class ChessGame {
     }
 
     public void loadMoves() {
-        moveDao.findAllMoves()
+        moveDao.findAll()
                 .forEach(moveCommand -> move(moveCommand.getFrom(), moveCommand.getTo()));
     }
 }

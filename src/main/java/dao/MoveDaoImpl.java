@@ -40,7 +40,7 @@ public class MoveDaoImpl implements MoveDao {
     }
 
     @Override
-    public List<MoveCommand> findAllMoves() {
+    public List<MoveCommand> findAll() {
         final String query = "SELECT * FROM move";
         List<MoveCommand> moveCommands = new ArrayList<>();
         try (final PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
