@@ -1,7 +1,6 @@
 package domain;
 
 import dao.MoveDao;
-import dao.MoveDaoImpl;
 import domain.board.ChessBoard;
 import domain.piece.Piece;
 import domain.piece.PieceWrapper;
@@ -9,7 +8,7 @@ import java.util.List;
 
 public class ChessGame {
     private final ChessBoard chessBoard;
-    private final MoveDao moveDao = new MoveDaoImpl();
+    private final MoveDao moveDao = new MoveDao();
 
     public ChessGame() {
         this.chessBoard = new ChessBoard();
