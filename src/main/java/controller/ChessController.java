@@ -1,7 +1,5 @@
 package controller;
 
-import dao.MoveDao;
-import dao.MoveDaoImpl;
 import domain.ChessGame;
 import domain.GameStatus;
 import domain.Position;
@@ -20,8 +18,6 @@ import view.InputView;
 import view.OutputView;
 
 public class ChessController {
-    private static final MoveDao MOVE_DAO = new MoveDaoImpl();
-
     public void run() {
         OutputView.printGuide();
         Command firstCommand = InputView.readStartPhase();
@@ -41,10 +37,10 @@ public class ChessController {
     }
 
     private ChessGame initChessGame(Command command) {
-        if (isStartCommand(command)) {
-            MOVE_DAO.deleteAll();
-        }
         ChessGame chessGame = new ChessGame();
+        if (isStartCommand(command)) {
+            chessGame.startBoard();
+        }
         if (isContinueCommand(command)) {
             chessGame.loadMoves();
         }

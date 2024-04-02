@@ -60,4 +60,8 @@ public class ChessGame {
         moveDao.findAll()
                 .forEach(moveCommand -> move(moveCommand.getFrom(), moveCommand.getTo()));
     }
+
+    public void startBoard() {
+        moveDao.deleteAll();
+    }
 }
