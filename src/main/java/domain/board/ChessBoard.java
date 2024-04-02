@@ -46,7 +46,8 @@ public class ChessBoard {
     private Piece findPiece(Position position) {
         return piecesOnBoard.stream()
                 .filter(piece -> piece.isOn(position))
-                .findFirst().orElseThrow();
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 위치에 기물이 존재하지 않습니다"));
     }
 
     private void removePieceIfCaught(Position position, PieceMoveResult moveResult) {
@@ -63,7 +64,8 @@ public class ChessBoard {
                     Team otherTeam = currentTeam.otherTeam();
                     return pieceTeam.equals(otherTeam);
                 })
-                .findFirst().orElseThrow();
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 위치에 기물이 존재하지 않습니다"));
         piecesOnBoard.remove(needToRemovePiece);
     }
 

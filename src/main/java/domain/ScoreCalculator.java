@@ -25,7 +25,7 @@ public class ScoreCalculator {
                 .map(PieceWrapper::getPieceType)
                 .map(PieceType::getScore)
                 .reduce(Double::sum)
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalArgumentException("점수를 계산할 수 있는 기물이 존재하지 않습니다."));
     }
 
     private double deductionBySameRowPawn(List<PieceWrapper> piecesOfTeam) {
