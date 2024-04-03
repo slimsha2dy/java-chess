@@ -28,8 +28,40 @@ public class ChessController {
         List<PieceWrapper> piecesOnBoard = wrapPieces(chessGame.getPiecesOnBoard());
         OutputView.printChessBoard(piecesOnBoard);
 
-        while (playTurnAndIsNotEnd(chessGame)) {
+        Command command = InputView.readWhilePlaying();
+        while (isGamePlayable(chessGame, command)) {
+            command = playTurnAndGetCommand(chessGame, command);
         }
+    }
+
+    private Command playTurnAndGetCommand(ChessGame chessGame, Command command) {
+        if (command.equals(StatusCommand.STATUS_COMMAND)) {
+            OutputView.printScore(
+                    chessGame.getTeamScore(Team.WHITE),
+                    chessGame.getTeamScore(Team.BLACK),
+                    chessGame.getHigher()
+            );
+            return InputView.readWhilePlaying();
+        }
+        GameStatus gameStatus = playMove(command, chessGame);
+        if (gameStatus.equals(GameStatus.RETRY)) {
+            OutputView.printReInputGuide();
+        }
+        if (!gameStatus.equals(GameStatus.END)) {
+            return InputView.readWhilePlaying();
+        }
+        return command;
+    }
+
+    private boolean isGamePlayable(ChessGame chessGame, Command command) {
+        if (command == EndCommand.END_COMMAND) {
+            return false;
+        }
+        if (chessGame.isGameOver()) {
+            OutputView.printEndGame(chessGame.getWinner());
+            return false;
+        }
+        return true;
     }
 
     private boolean isEndCommand(Command command) {
@@ -39,7 +71,7 @@ public class ChessController {
     private ChessGame initChessGame(Command command) {
         ChessGame chessGame = new ChessGame();
         if (isStartCommand(command)) {
-            chessGame.startBoard();
+            chessGame.initBoard();
         }
         if (isContinueCommand(command)) {
             chessGame.loadMoves();
@@ -53,30 +85,6 @@ public class ChessController {
 
     private boolean isContinueCommand(Command command) {
         return command.equals(ContinueCommand.CONTINUE_COMMAND);
-    }
-
-    private boolean playTurnAndIsNotEnd(ChessGame chessGame) {
-        Command command = InputView.readWhilePlaying();
-        if (command.equals(StatusCommand.STATUS_COMMAND)) {
-            OutputView.printScore(
-                    chessGame.getTeamScore(Team.WHITE),
-                    chessGame.getTeamScore(Team.BLACK),
-                    chessGame.getHigher()
-            );
-            return true;
-        }
-        if (command.equals(EndCommand.END_COMMAND)) {
-            return false;
-        }
-        GameStatus gameStatus = playMove(command, chessGame);
-        if (gameStatus.equals(GameStatus.END)) {
-            OutputView.printEndGame(chessGame.getWinner());
-            return false;
-        }
-        if (gameStatus.equals(GameStatus.RETRY)) {
-            OutputView.printReInputGuide();
-        }
-        return true;
     }
 
     private List<PieceWrapper> wrapPieces(List<Piece> piecesOnBoard) {

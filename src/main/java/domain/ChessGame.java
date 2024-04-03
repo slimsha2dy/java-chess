@@ -3,6 +3,7 @@ package domain;
 import dao.MoveDao;
 import domain.board.ChessBoard;
 import domain.piece.Piece;
+import domain.piece.PieceType;
 import domain.piece.PieceWrapper;
 import java.util.List;
 
@@ -60,7 +61,15 @@ public class ChessGame {
                 .forEach(moveCommand -> move(moveCommand.getFrom(), moveCommand.getTo()));
     }
 
-    public void startBoard() {
+    public void initBoard() {
         moveDao.deleteAll();
+    }
+
+    public boolean isGameOver() {
+        List<Piece> piecesOnBoard = chessBoard.getPiecesOnBoard();
+        long kingNumber = piecesOnBoard.stream()
+                .filter(piece -> piece.getPieceType() == PieceType.KING)
+                .count();
+        return kingNumber == 1;
     }
 }
