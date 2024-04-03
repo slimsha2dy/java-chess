@@ -27,7 +27,7 @@ public class MoveDao {
     }
 
     public void add(Position from, Position to) {
-        final String query = "INSERT INTO move (`from`, `to`) VALUES(?, ?)";
+        final String query = "INSERT INTO move (source, destination) VALUES(?, ?)";
         try (final PreparedStatement preparedStateMent = getConnection().prepareStatement(query)) {
             preparedStateMent.setString(1, from.name());
             preparedStateMent.setString(2, to.name());
@@ -44,8 +44,8 @@ public class MoveDao {
             final ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 moveCommands.add(new MoveCommand(
-                        resultSet.getString("from"),
-                        resultSet.getString("to")
+                        resultSet.getString("source"),
+                        resultSet.getString("destination")
                 ));
             }
         } catch (final SQLException e) {
