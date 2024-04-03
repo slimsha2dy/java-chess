@@ -6,7 +6,6 @@ import domain.command.EndCommand;
 import domain.command.MoveCommand;
 import domain.command.StartCommand;
 import domain.command.StatusCommand;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -76,11 +75,12 @@ public class InputView {
         }
 
         public static Command getCommandByInput(String inputCommand) {
-            return Arrays.stream(values())
-                    .filter(commandMapper -> commandMapper.input.equals(inputCommand))
-                    .findFirst()
-                    .map(commandMapper -> commandMapper.command)
-                    .orElseThrow(() -> new IllegalArgumentException("해당하는 명령어가 존재하지 않습니다."));
+            for (CommandMapper commandMapper : values()) {
+                if (commandMapper.input.equals(inputCommand)) {
+                    return commandMapper.command;
+                }
+            }
+            throw new IllegalArgumentException("해당하는 명령어가 존재하지 않습니다.");
         }
     }
 }

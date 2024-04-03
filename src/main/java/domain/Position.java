@@ -1,7 +1,6 @@
 package domain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -25,11 +24,12 @@ public enum Position {
     }
 
     static Position getInstance(int row, int column) {
-        return Arrays.stream(values())
-                .filter(position -> position.row == row)
-                .filter(position -> position.column == column)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 좌표입니다."));
+        for (Position position : values()) {
+            if (position.row == row && position.column == column) {
+                return position;
+            }
+        }
+        throw new IllegalArgumentException("존재하지 않는 좌표입니다.");
     }
 
     public List<Position> route(Position targetPosition) {

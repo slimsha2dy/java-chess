@@ -57,16 +57,9 @@ public class ChessBoard {
     }
 
     private void removeDeadPiece(Position position) {
-        Piece needToRemovePiece = piecesOnBoard.stream()
-                .filter(piece -> piece.isOn(position))
-                .filter(piece -> {
-                    Team pieceTeam = piece.getTeam();
-                    Team otherTeam = currentTeam.otherTeam();
-                    return pieceTeam.equals(otherTeam);
-                })
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("해당 위치에 기물이 존재하지 않습니다"));
-        piecesOnBoard.remove(needToRemovePiece);
+        piecesOnBoard.removeIf(
+                piece -> piece.isOn(position) && piece.getTeam() == currentTeam.otherTeam()
+        );
     }
 
     private void changeCurrentTeamIfNotFail(PieceMoveResult moveResult) {
