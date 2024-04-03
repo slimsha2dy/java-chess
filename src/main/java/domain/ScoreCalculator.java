@@ -22,10 +22,8 @@ public class ScoreCalculator {
 
     private double simpleTotal(List<PieceWrapper> piecesOfTeam) {
         return piecesOfTeam.stream()
-                .map(PieceWrapper::getPieceType)
-                .map(PieceType::getScore)
-                .reduce(Double::sum)
-                .orElseThrow(() -> new IllegalArgumentException("점수를 계산할 수 있는 기물이 존재하지 않습니다."));
+                .mapToDouble(pieceWrappers -> pieceWrappers.getPieceType().getScore())
+                .sum();
     }
 
     private double deductionBySameRowPawn(List<PieceWrapper> piecesOfTeam) {
