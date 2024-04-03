@@ -18,69 +18,52 @@ public class InputView {
     public static Command readStartPhase() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        while (!CommandMapper.isStartCommand(input) && !CommandMapper.isEndCommand(input)
-                && !CommandMapper.isContinueCommand(input)) {
+        while (!isStartCommand(input) && !isEndCommand(input)
+                && !isContinueCommand(input)) {
             System.out.println("다시 입력해 주세요");
             input = scanner.nextLine();
         }
-        return CommandMapper.getCommandByInput(input);
+        if (isContinueCommand(input)) {
+            return ContinueCommand.CONTINUE_COMMAND;
+        }
+        if (isStartCommand(input)) {
+            return StartCommand.START_COMMAND;
+        }
+        return EndCommand.END_COMMAND;
     }
 
+    private static boolean isEndCommand(String input) {
+        return EndCommand.INPUT_END.equals(input);
+    }
+
+    private static boolean isStartCommand(String input) {
+        return StartCommand.INPUT_START.equals(input);
+    }
+
+    private static boolean isContinueCommand(String input) {
+        return ContinueCommand.INPUT_CONTINUE.equals(input);
+    }
 
     public static Command readWhilePlaying() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        while (!MOVE_FORM.matcher(input).matches() && !CommandMapper.isEndCommand(input)
-                && !CommandMapper.isStatusCommand(input)) {
+        while (!MOVE_FORM.matcher(input).matches() && !isEndCommand(input)
+                && !isStatusCommand(input)) {
             System.out.println("다시 입력해 주세요");
             input = scanner.nextLine();
         }
-        if (CommandMapper.isEndCommand(input) || CommandMapper.isStatusCommand(input)) {
-            return CommandMapper.getCommandByInput(input);
+        if (isEndCommand(input)) {
+            return EndCommand.END_COMMAND;
+        }
+        if (isStatusCommand(input)) {
+            return StatusCommand.STATUS_COMMAND;
         }
         String options = input.substring(OPTION_BEGIN_INDEX);
         String[] splitOptions = options.split(SEPARATOR);
         return new MoveCommand(splitOptions[0], splitOptions[1]);
     }
 
-    enum CommandMapper {
-        CONTINUE_COMMAND("continue", ContinueCommand.CONTINUE_COMMAND),
-        END_COMMAND("end", EndCommand.END_COMMAND),
-        START_COMMAND("start", StartCommand.START_COMMAND),
-        STATUS_COMMAND("status", StatusCommand.STATUS_COMMAND);
-
-        private final String input;
-        private final Command command;
-
-        CommandMapper(String input, Command command) {
-            this.input = input;
-            this.command = command;
-        }
-
-        public static boolean isStartCommand(String input) {
-            return input.equals(START_COMMAND.input);
-        }
-
-        public static boolean isEndCommand(String input) {
-            return input.equals(END_COMMAND.input);
-        }
-
-        public static boolean isContinueCommand(String input) {
-            return input.equals(CONTINUE_COMMAND.input);
-        }
-
-
-        public static boolean isStatusCommand(String input) {
-            return input.equals(STATUS_COMMAND.input);
-        }
-
-        public static Command getCommandByInput(String inputCommand) {
-            for (CommandMapper commandMapper : values()) {
-                if (commandMapper.input.equals(inputCommand)) {
-                    return commandMapper.command;
-                }
-            }
-            throw new IllegalArgumentException("해당하는 명령어가 존재하지 않습니다.");
-        }
+    private static boolean isStatusCommand(String input) {
+        return StatusCommand.INPUT_STATUS.equals(input);
     }
 }
